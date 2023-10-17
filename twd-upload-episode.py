@@ -27,11 +27,14 @@ print(f'{response} {host}')
 json_response = json.loads(response.text)
 print(f'Number of records in array/list (length): {len(json_response)}')
 
-for item in json_response:
+for episode in json_response:# (Array/List: for thing in list)
     #print(f'{item["number"]}: {item["name"]} (season: {item["season"]}, airdate: {item["airdate"]})')
-    entry = {
+    entry_template = {
         u"partitionkey": "the-walking-dead",
-        u"RowKey": item["id"],
-        u"Episodename": item["name"]
+        u"RowKey": episode["id"]
     }
+    entry = dict(entry_template)
+    for i, (k,v) in enumerate(episode.items()):# (Dictionary: for (index) item/s in dict)
+        if isinstance(v,str) or isinstance(v,int):
+            entry.update({k:v})
     print(entry)
