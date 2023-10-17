@@ -37,4 +37,6 @@ for episode in json_response:# (Array/List: for thing in list)
     for i, (k,v) in enumerate(episode.items()):# (Dictionary: for (index) item/s in dict)
         if isinstance(v,str) or isinstance(v,int):
             entry.update({k:v})
+        elif k == 'image':
+            entry.update({k:v['medium']})
     print(entry)
