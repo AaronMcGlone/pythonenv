@@ -1,6 +1,11 @@
 # Import modules that this script/function needs to use
 import requests, json
+from azure.data.tables import TableServiceClient
 
+table_name = 'moviecast'
+conn_str = ''
+table_service_client = TableServiceClient.from_connection_string(conn_str=conn_str)
+table_client = table_service_client.get_table_client(table_name=table_name)
 # The API URL that we'll be requesting from
 url = "https://api.tvmaze.com/shows/73/"
 # Specific resource from the API URL for a/some particular data
@@ -27,6 +32,7 @@ print(f'{response} {host}')
 json_response = json.loads(response.text)
 print(f'Number of records in array/list (length): {len(json_response)}')
 
+entry_count = 0
 for castItem in json_response:# (Array/List: for thing in list)
     #print(f'{item["number"]}: {item["name"]} (season: {item["season"]}, airdate: {item["airdate"]})')
     entry_template = {
@@ -47,4 +53,6 @@ for castItem in json_response:# (Array/List: for thing in list)
                 'actorgender': v['gender']
             
             })
-    print(entry)
+    entry_count = entry_count + 1
+    entry = table_client.upsert_entity(entity=entry)
+    print(entry_count)
