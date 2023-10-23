@@ -3,7 +3,7 @@ import requests, json
 from azure.data.tables import TableServiceClient
 
 table_name = 'moviecast'
-conn_str = ''
+conn_str = 'DefaultEndpointsProtocol=https;AccountName=amqt7lcdrg3txzs;AccountKey=ru8DJpku209MHWsh+LIbhpdZySS4b3Tnb1TJQgQPwscGpoDuUCogGM87qMXtcskybChm5olK2HYn+ASt2/Mi/A==;EndpointSuffix=core.windows.net'
 table_service_client = TableServiceClient.from_connection_string(conn_str=conn_str)
 table_client = table_service_client.get_table_client(table_name=table_name)
 # The API URL that we'll be requesting from
@@ -37,7 +37,7 @@ for castItem in json_response:# (Array/List: for thing in list)
     #print(f'{item["number"]}: {item["name"]} (season: {item["season"]}, airdate: {item["airdate"]})')
     entry_template = {
         u"PartitionKey": "the-walking-dead",
-        u"RowKey": castItem["character"]["id"]
+        u"RowKey": str(castItem["character"]["id"])
     }
     entry = dict(entry_template)
     for i, (k,v) in enumerate(castItem.items()):

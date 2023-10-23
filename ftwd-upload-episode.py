@@ -8,7 +8,7 @@ table_service_client = TableServiceClient.from_connection_string(conn_str=conn_s
 table_client = table_service_client.get_table_client(table_name=table_name)
 
 # The API URL that we'll be requesting from
-url = "https://api.tvmaze.com/shows/73/"
+url = "https://api.tvmaze.com/shows/1824/"
 # Specific resource from the API URL for a/some particular data
 resource = 'episodes'
 # Build the final host/url to be queried
@@ -37,7 +37,7 @@ entry_count = 0
 for episode in json_response:# (Array/List: for thing in list)
     #print(f'{item["number"]}: {item["name"]} (season: {item["season"]}, airdate: {item["airdate"]})')
     entry_template = {
-        u"PartitionKey": "the-walking-dead",
+        u"PartitionKey": "fear-the-walking-dead",
         u"RowKey": str(episode["id"])
     }
     entry = dict(entry_template)
