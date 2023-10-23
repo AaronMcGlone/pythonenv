@@ -3,7 +3,7 @@ import requests, json
 from azure.data.tables import TableServiceClient
 
 table_name = 'moviecast'
-conn_str = 'DefaultEndpointsProtocol=https;AccountName=amqt7lcdrg3txzs;AccountKey=ru8DJpku209MHWsh+LIbhpdZySS4b3Tnb1TJQgQPwscGpoDuUCogGM87qMXtcskybChm5olK2HYn+ASt2/Mi/A==;EndpointSuffix=core.windows.net'
+conn_str = ''
 table_service_client = TableServiceClient.from_connection_string(conn_str=conn_str)
 table_client = table_service_client.get_table_client(table_name=table_name)
 # The API URL that we'll be requesting from
