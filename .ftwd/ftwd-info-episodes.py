@@ -2,7 +2,7 @@
 import requests, json
 
 # The API URL that we'll be requesting from
-url = "https://api.tvmaze.com/shows/73/"
+url = "https://api.tvmaze.com/shows/1824/"
 # Specific resource from the API URL for a/some particular data
 resource = 'episodes'
 # Build the final host/url to be queried
@@ -27,16 +27,6 @@ print(f'{response} {host}')
 json_response = json.loads(response.text)
 print(f'Number of records in array/list (length): {len(json_response)}')
 
-for episode in json_response:# (Array/List: for thing in list)
-    #print(f'{item["number"]}: {item["name"]} (season: {item["season"]}, airdate: {item["airdate"]})')
-    entry_template = {
-        u"PartitionKey": "the-walking-dead",
-        u"RowKey": episode["id"]
-    }
-    entry = dict(entry_template)
-    for i, (k,v) in enumerate(episode.items()):# (Dictionary: for (index) item/s in dict)
-        if isinstance(v,str) or isinstance(v,int):
-            entry.update({k:v})
-        elif k == 'image':
-            entry.update({k:v['medium']})
-    print(entry)
+for item in json_response:
+    print(f'{item["number"]}: {item["name"]} (season: {item["season"]}, airdate: {item["airdate"]})')
+    

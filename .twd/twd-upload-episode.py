@@ -1,10 +1,16 @@
 # Import modules that this script/function needs to use
-import requests, json
+import requests, json, os
+from azure.data.tables import TableServiceClient
+
+table_name = 'movieepisode'
+conn_str = 'DefaultEndpointsProtocol=https;AccountName=amqt7lcdrg3txzs;AccountKey=ru8DJpku209MHWsh+LIbhpdZySS4b3Tnb1TJQgQPwscGpoDuUCogGM87qMXtcskybChm5olK2HYn+ASt2/Mi/A==;EndpointSuffix=core.windows.net'
+table_service_client = TableServiceClient.from_connection_string(conn_str=conn_str)
+table_client = table_service_client.get_table_client(table_name=table_name)
 
 # The API URL that we'll be requesting from
 url = "https://api.tvmaze.com/shows/73/"
 # Specific resource from the API URL for a/some particular data
-resource = 'cast'
+resource = 'episodes'
 # Build the final host/url to be queried
 host = f'{url}{resource}'
 # Define any parameters
@@ -27,24 +33,20 @@ print(f'{response} {host}')
 json_response = json.loads(response.text)
 print(f'Number of records in array/list (length): {len(json_response)}')
 
-for castItem in json_response:# (Array/List: for thing in list)
+entry_count = 0
+for episode in json_response:# (Array/List: for thing in list)
     #print(f'{item["number"]}: {item["name"]} (season: {item["season"]}, airdate: {item["airdate"]})')
     entry_template = {
         u"PartitionKey": "the-walking-dead",
-        u"RowKey": castItem["character"]["id"]
+        u"RowKey": str(episode["id"])
     }
     entry = dict(entry_template)
-    for i, (k,v) in enumerate(castItem.items()):
-        #if isinstance(v,str) or isinstance(v,int):
-        if k == 'character':        
-            entry.update({
-                'characterName':v['name'],
-                'characterImage': v['image']['medium']
-            })
-        elif k == 'person':
-            entry.update({
-                'actorName':v['name'],
-                'actorgender': v['gender']
-            
-            })
-    print(entry)
+    for i, (k,v) in enumerate(episode.items()):# (Dictionary: for (index) item/s in dict)
+        if isinstance(v,str) or isinstance(v,int):
+            entry.update({k:v})
+        elif k == 'image':
+            entry.update({k:v['medium']})
+    entry_count = entry_count + 1
+    entry = table_client.upsert_entity(entity=entry)
+    print(entry_count)
+    
