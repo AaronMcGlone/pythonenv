@@ -1,9 +1,10 @@
 # Import modules that this script/function needs to use
 import requests, json
+
 # The API URL that we'll be requesting from
 url = "https://api.tvmaze.com/shows/73/"
 # Specific resource from the API URL for a/some particular data
-resource = 'episodes'
+resource = 'cast'
 # Build the final host/url to be queried
 host = f'{url}{resource}'
 # Define any parameters
@@ -27,5 +28,5 @@ json_response = json.loads(response.text)
 print(f'Number of records in array/list (length): {len(json_response)}')
 
 for item in json_response:
-    print(f'{item["number"]}: {item["name"]} (season: {item["season"]}) , airdate: {item["airdate"]}')
+    print(f'{item["character"]["id"]}: {item["character"]["name"]}')# (season: {item["season"]}, airdate: {item["airdate"]})')
     
