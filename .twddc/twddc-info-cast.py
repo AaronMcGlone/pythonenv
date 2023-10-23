@@ -28,5 +28,4 @@ json_response = json.loads(response.text)
 print(f'Number of records in array/list (length): {len(json_response)}')
 
 for item in json_response:
-    print(f'{item["character"]["id"]}: {item["character"]["name"]}')# (season: {item["season"]}, airdate: {item["airdate"]})')
-    
+    print(f'{item["character"]["id"]}: {item["character"]["name"]}') #{item["season"]}: {item["airdate"]})')
